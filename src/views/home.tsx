@@ -1,10 +1,29 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { View, Text, Button, StyleSheet } from 'react-native'
+import { RootStackParamList } from '../types'
 
-const Home = () => (
-    <View>
-        <Text>You don't have any decks yet</Text>
+type HomeScreenProp = StackNavigationProp<RootStackParamList, 'Home'>
+
+const Home = () => {
+  const navigation = useNavigation<HomeScreenProp>()
+
+  return (
+    <View style={styles.container}>
+      <Button title='New deck' onPress={() => navigation.navigate('CreateDeck')} />
+      <Text>You don't have any decks yet</Text>
     </View>
-)
+  )
+}
 
 export default Home
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
