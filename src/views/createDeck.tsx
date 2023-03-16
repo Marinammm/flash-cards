@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { View, Button, TextInput, StyleSheet } from 'react-native'
+import uuid from 'react-native-uuid'
+import StorageMethods from '../StorageData'
+import { Deck } from '../types'
 
 type Card = {
   prompt: string
@@ -17,6 +20,17 @@ const CreateDeck = () => {
     setDeckCards(newDeck);
     setNewPrompt('');
     setNewAnswer('');
+  }
+
+  const saveDeck = async () => {
+    const newDeck: Deck = {
+      name: deckName,
+      id: uuid.v4().toString(),
+      cards: deckCards,
+      grade: 0,
+      reviews: 0
+    }
+    await StorageMethods.write(newDeck)
   }
 
   return (
@@ -41,7 +55,7 @@ const CreateDeck = () => {
         value={newAnswer}
       />
       <Button title="Save Card" onPress={addCard} />
-      <Button title="Finish Deck" />
+      <Button title="Finish Deck" onPress={saveDeck}/>
     </View>
   )
 }
