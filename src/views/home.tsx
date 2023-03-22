@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { View, Text, Button, StyleSheet, FlatList } from 'react-native'
+import { View, Text, Button, StyleSheet, FlatList, Pressable } from 'react-native'
 import { RootStackParamList, Deck } from '../types'
 import StorageMethods from '../StorageData'
+import { DeckContext } from '../contexts/DeckContext'
 
 type HomeScreenProp = StackNavigationProp<RootStackParamList, 'Home'>
 
 const Home = () => {
   const [decks, setDecks] = useState<Array<Deck>>()
   const navigation = useNavigation<HomeScreenProp>()
+
+  const { setSelectedDeck } = useContext(DeckContext)
 
   useEffect(() => {
     const getDecks = async () => {
@@ -20,15 +23,24 @@ const Home = () => {
     getDecks()
   }, [])
 
-  const deck = (name: string) => (
+  const onPressDeck = (deck: Deck) => {
+    setSelectedDeck(deck)
+
+    navigation.navigate('DeckPage')
+  }
+
+  const deck = (deck: Deck) => (
     <View>
-      <Text>{name}</Text>
+      <Pressable onPress={() => onPressDeck(deck)}>
+        <Text>
+          {deck.name}
+        </Text>
+      </Pressable>
     </View>
   )
 
   const emptyDeckList = (
     <View style={styles.container}>
-      <Button title='New deck' onPress={() => navigation.navigate('CreateDeck')} />
       <Text>You don't have any decks yet</Text>
     </View>
   )
@@ -37,10 +49,11 @@ const Home = () => {
     <View style={styles.container}>
       <FlatList
         data={decks}
-        renderItem={({ item }) => deck(item.name)}
+        renderItem={({ item }) => deck(item)}
         keyExtractor={item => item.id}
         ListEmptyComponent={emptyDeckList}
       />
+      <Button title='New deck' onPress={() => navigation.navigate('CreateDeck')} />
     </View>
   )
 }

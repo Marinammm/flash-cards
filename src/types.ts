@@ -1,6 +1,7 @@
 export type RootStackParamList = {
   Home: undefined
   CreateDeck: undefined
+  DeckPage: undefined
 }
 
 type Card = {
