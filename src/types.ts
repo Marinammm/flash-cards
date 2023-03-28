@@ -2,9 +2,10 @@ export type RootStackParamList = {
   Home: undefined
   CreateDeck: undefined
   DeckPage: undefined
+  ReviewDeck: undefined
 }
 
-type Card = {
+export type Card = {
   prompt: string
   answer: string
 }

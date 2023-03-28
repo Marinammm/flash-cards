@@ -9,14 +9,14 @@ import { DeckContext } from '../contexts/DeckContext'
 type HomeScreenProp = StackNavigationProp<RootStackParamList, 'Home'>
 
 const Home = () => {
-  const [decks, setDecks] = useState<Array<Deck>>()
   const navigation = useNavigation<HomeScreenProp>()
 
-  const { setSelectedDeck } = useContext(DeckContext)
+  const { setSelectedDeck, decks, setDecks } = useContext(DeckContext)
 
   useEffect(() => {
     const getDecks = async () => {
       const data = await StorageMethods.read()
+      setDecks(data.decks)
       setDecks(data.decks)
     }
 

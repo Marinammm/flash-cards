@@ -10,6 +10,8 @@ type StorageData = {
 type StorageMethodsType = {
   read: () => Promise<StorageData>
   write: (newDeck: Deck) => Promise<void>
+  edit: (decks: Array<Deck>) => Promise<void>
+  delete: (id: string | number) => Promise<void>
   clear: () => Promise<void>
 }
 
@@ -32,6 +34,24 @@ const StorageMethods: StorageMethodsType = {
       const newDecks = [...currentData.decks, newDeck]
       const newData = JSON.stringify({ decks: newDecks })
       await AsyncStorage.setItem(STORAGE_KEY, newData)
+    } catch (error) {
+      return
+    }
+  },
+  edit: async(decks) => {
+    try {
+      const data = JSON.stringify({ decks })
+      await AsyncStorage.setItem(STORAGE_KEY, data)
+    } catch (error) {
+      return
+    }
+  },
+  delete: async(id: string | number) => {
+    try {
+      const { decks } = await StorageMethods.read()
+      const index = decks.findIndex((d) => d.id === id)
+      decks.splice(index, 1)
+      await StorageMethods.edit(decks)
     } catch (error) {
       return
     }
