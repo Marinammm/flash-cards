@@ -6,12 +6,26 @@ import ReviewDeck from './views/reviewDeck'
 
 const Stack = createNativeStackNavigator()
 
+type PagesType = {
+  HOME: 'Home'
+  CREATE_DECK: 'Create a new deck'
+  DECK_PAGE: 'Deck info'
+  REVIEW_DECK: 'Review your deck'
+}
+
+export const PAGES: PagesType = {
+  HOME: 'Home',
+  CREATE_DECK: 'Create a new deck',
+  DECK_PAGE: 'Deck info',
+  REVIEW_DECK: 'Review your deck',
+}
+
 const NavigationStack = () => (
   <Stack.Navigator>
-    <Stack.Screen name='Home' component={Home} />
-    <Stack.Screen name='CreateDeck' component={CreateDeck} />
-    <Stack.Screen name='DeckPage' component={DeckPage} />
-    <Stack.Screen name='ReviewDeck' component={ReviewDeck} />
+    <Stack.Screen name={PAGES.HOME} component={Home} />
+    <Stack.Screen name={PAGES.CREATE_DECK} component={CreateDeck} />
+    <Stack.Screen name={PAGES.DECK_PAGE} component={DeckPage} />
+    <Stack.Screen name={PAGES.REVIEW_DECK} component={ReviewDeck} />
   </Stack.Navigator>
 );
 

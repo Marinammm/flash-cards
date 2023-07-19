@@ -1,8 +1,10 @@
+import { PAGES } from './NavigationStack'
+
 export type RootStackParamList = {
-  Home: undefined
-  CreateDeck: undefined
-  DeckPage: undefined
-  ReviewDeck: undefined
+  [PAGES.HOME]: undefined
+  [PAGES.CREATE_DECK]: undefined
+  [PAGES.DECK_PAGE]: undefined
+  [PAGES.REVIEW_DECK]: undefined
 }
 
 export type Card = {

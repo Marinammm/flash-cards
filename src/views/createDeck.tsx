@@ -1,9 +1,15 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { View, TextInput, StyleSheet } from 'react-native'
 import uuid from 'react-native-uuid'
 import StorageMethods from '../StorageData'
-import { Deck } from '../types'
+import { DeckContext } from '../contexts/DeckContext'
+import { Deck, RootStackParamList } from '../types'
 import { Button } from '../components'
+import { PAGES } from '../NavigationStack'
+
+type CreateDeckScreenProp = StackNavigationProp<RootStackParamList, typeof PAGES.CREATE_DECK>
 
 type Card = {
   prompt: string
@@ -15,6 +21,10 @@ const CreateDeck = () => {
   const [newPrompt, setNewPrompt] = useState('');
   const [newAnswer, setNewAnswer] = useState('');
   const [deckCards, setDeckCards] = useState<Array<Card>>([]);
+
+  const navigation = useNavigation<CreateDeckScreenProp>();
+
+  const { decks, setDecks } = useContext(DeckContext)
 
   const addCard = () => {
     const newDeck = [ ...deckCards, { prompt: newPrompt, answer: newAnswer }];
@@ -32,6 +42,10 @@ const CreateDeck = () => {
       reviews: 0
     }
     await StorageMethods.write(newDeck)
+    const newDecks = [...decks]
+    newDecks.push(newDeck)
+    setDecks(newDecks)
+    navigation.navigate(PAGES.HOME)
   }
 
   return (

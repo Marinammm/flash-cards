@@ -6,6 +6,7 @@ type DeckContextType = {
   selectedDeck: Deck
   setSelectedDeck: (deck: Deck) => void
   saveReview: (id: string | number, grade: number, reviews: number) => void
+  deleteDeck: (id: string | number) => void
   decks: Array<Deck>
   setDecks: (decks: Array<Deck>) => void
 }
@@ -36,13 +37,22 @@ const deckContext = (): DeckContextType => {
     await StorageMethods.edit(userDecks)
   }
 
-  return { selectedDeck, setSelectedDeck, saveReview, decks, setDecks }
+  const deleteDeck = async (id: string | number) => {
+    const userDecks = [...decks]
+    const index = userDecks.findIndex((deck) => deck.id === id)
+    userDecks.splice(index, 1)
+
+    setDecks(userDecks)
+    await StorageMethods.delete(id)
+  }
+
+  return { selectedDeck, setSelectedDeck, saveReview, deleteDeck, decks, setDecks }
 }
 
 const DeckProvider = ({ children }: DeckProviderProps) => {
-  const { selectedDeck, setSelectedDeck, saveReview, decks, setDecks } = deckContext()
+  const { selectedDeck, setSelectedDeck, saveReview, deleteDeck, decks, setDecks } = deckContext()
   return (
-    <DeckContext.Provider value={{ selectedDeck, setSelectedDeck, saveReview, decks, setDecks }}>
+    <DeckContext.Provider value={{ selectedDeck, setSelectedDeck, saveReview, deleteDeck, decks, setDecks }}>
       {children}
     </DeckContext.Provider>
   )

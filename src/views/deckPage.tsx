@@ -1,16 +1,22 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { Pressable, FlatList, View, StyleSheet } from 'react-native'
+import { FlatList, View, StyleSheet } from 'react-native'
 import { DeckContext } from '../contexts/DeckContext'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../types'
 import { StyledText, Button, Card } from '../components'
+import { PAGES } from '../NavigationStack'
 
-type DeckPageScreenProp = StackNavigationProp<RootStackParamList, 'DeckPage'>
+type DeckPageScreenProp = StackNavigationProp<RootStackParamList, typeof PAGES.DECK_PAGE>
 
 const DeckPage = () => {
-  const { selectedDeck } = useContext(DeckContext)
+  const { selectedDeck, deleteDeck } = useContext(DeckContext)
   const navigation = useNavigation<DeckPageScreenProp>()
+
+  const deleteAction = () => {
+    deleteDeck(selectedDeck.id)
+    navigation.navigate('Home')
+  }
 
   return (
     <View style={styles.container}>
@@ -22,10 +28,11 @@ const DeckPage = () => {
         <StyledText>Times reviewed: {selectedDeck.reviews}</StyledText>
       </View>
       <View style={styles.buttons}>
-        <Button onClick={() => navigation.navigate('ReviewDeck')}>
+        <Button onClick={() => navigation.navigate(PAGES.REVIEW_DECK)}>
           Review
         </Button>
         <Button onClick={() => {}}>Edit</Button>
+        <Button onClick={() => deleteAction()}>Delete</Button>
       </View>
       <StyledText size={16}>Cards</StyledText>
       <FlatList

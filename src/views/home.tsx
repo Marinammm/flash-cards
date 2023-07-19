@@ -6,8 +6,9 @@ import { RootStackParamList, Deck } from '../types'
 import { StyledText, Button } from '../components'
 import StorageMethods from '../StorageData'
 import { DeckContext } from '../contexts/DeckContext'
+import { PAGES } from '../NavigationStack'
 
-type HomeScreenProp = StackNavigationProp<RootStackParamList, 'Home'>
+type HomeScreenProp = StackNavigationProp<RootStackParamList, typeof PAGES.HOME>
 
 const Home = () => {
   const navigation = useNavigation<HomeScreenProp>()
@@ -18,7 +19,6 @@ const Home = () => {
     const getDecks = async () => {
       const data = await StorageMethods.read()
       setDecks(data.decks)
-      setDecks(data.decks)
     }
 
     getDecks()
@@ -27,7 +27,7 @@ const Home = () => {
   const onPressDeck = (deck: Deck) => {
     setSelectedDeck(deck)
 
-    navigation.navigate('DeckPage')
+    navigation.navigate(PAGES.DECK_PAGE)
   }
 
   const deck = (deck: Deck) => (
@@ -55,7 +55,7 @@ const Home = () => {
         ListEmptyComponent={emptyDeckList}
         style={{ width: '100%' }}
       />
-      <Button onClick={() => navigation.navigate('CreateDeck')}>
+      <Button onClick={() => navigation.navigate(PAGES.CREATE_DECK)}>
         New deck
       </Button>
     </View>
