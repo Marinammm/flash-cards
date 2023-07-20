@@ -46,14 +46,14 @@ const Button = ({
       style={{
         height: getButtonHeight(size),
         width: getButtonWidth(size),
-        backgroundColor: '#769cd0',
+        backgroundColor: disabled ? '#e5e2e9' : '#769cd0',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5
       }}
     >
-      <StyledText color="#ededed">{children}</StyledText>
+      <StyledText color={disabled ? '#a9a8ad' : '#ededed'}>{children}</StyledText>
     </Pressable>
   )
 }

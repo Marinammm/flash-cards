@@ -78,9 +78,20 @@ const CreateDeck = () => {
             style={styles.cardInput}
           />
         </View>
-        <Button onClick={addCard}>Save Card</Button>
+        <Button
+          onClick={addCard}
+          disabled={!newPrompt.length || !newAnswer.length}
+        >
+          Save Card
+        </Button>
       </View>
-      <Button onClick={saveDeck} size="lg">Finish Deck</Button>
+      <Button
+        onClick={saveDeck}
+        size="lg"
+        disabled={!deckCards.length || !deckName.length}
+      >
+        Finish Deck
+      </Button>
     </View>
   )
 }
